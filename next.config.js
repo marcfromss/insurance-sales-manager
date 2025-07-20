@@ -1,18 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  trailingSlash: false,
-  async redirects() {
-    return [];
-  },
+  reactStrictMode: true,
 }
 
 module.exports = nextConfig 
