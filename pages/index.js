@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const commissionRates = {
+const defaultCommissionRates = {
   // Existing Carriers
   Aetna: { Auto: 0.1, Life: 0.12, Health: 0.08, Property: 0.11 },
   'State Farm': { Auto: 0.09, Life: 0.15, Health: 0.07, Property: 0.1 },
@@ -56,7 +56,7 @@ const commissionRates = {
   WellCare: { Auto: '', Life: '', Health: '', Property: '' }
 };
 
-const companies = Object.keys(commissionRates);
+const companies = Object.keys(defaultCommissionRates);
 const policyTypes = ['Auto', 'Life', 'Health', 'Property'];
 
 export default function Home() {
@@ -65,12 +65,19 @@ export default function Home() {
   const [commission, setCommission] = useState(null);
   const [entries, setEntries] = useState([]);
   const [chargebacks, setChargebacks] = useState([]);
+  const [commissionRates, setCommissionRates] = useState(defaultCommissionRates);
+  const [showRateManager, setShowRateManager] = useState(false);
+  const [editingCompany, setEditingCompany] = useState('');
+  const [editingRates, setEditingRates] = useState({ Auto: '', Life: '', Health: '', Property: '' });
 
   useEffect(() => {
     const savedEntries = localStorage.getItem('entries');
     const savedChargebacks = localStorage.getItem('chargebacks');
+    const savedRates = localStorage.getItem('commissionRates');
+    
     if (savedEntries) setEntries(JSON.parse(savedEntries));
     if (savedChargebacks) setChargebacks(JSON.parse(savedChargebacks));
+    if (savedRates) setCommissionRates(JSON.parse(savedRates));
   }, []);
 
   useEffect(() => {
@@ -80,6 +87,10 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('chargebacks', JSON.stringify(chargebacks));
   }, [chargebacks]);
+
+  useEffect(() => {
+    localStorage.setItem('commissionRates', JSON.stringify(commissionRates));
+  }, [commissionRates]);
 
   const calculate = () => {
     const value = parseFloat(form.value);
@@ -104,13 +115,28 @@ export default function Home() {
     setChargebackForm({ client: '', reason: '', amount: '', date: '' });
   };
 
+  const openRateEditor = (company) => {
+    setEditingCompany(company);
+    setEditingRates({ ...commissionRates[company] });
+    setShowRateManager(true);
+  };
+
+  const saveRates = () => {
+    const newRates = { ...commissionRates };
+    newRates[editingCompany] = editingRates;
+    setCommissionRates(newRates);
+    setShowRateManager(false);
+    setEditingCompany('');
+    setEditingRates({ Auto: '', Life: '', Health: '', Property: '' });
+  };
+
   const totalEarned = entries.reduce((sum, entry) => sum + entry.earned, 0);
   const totalChargebacks = chargebacks.reduce((sum, cb) => sum + cb.amount, 0);
   const netEarnings = totalEarned - totalChargebacks;
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <main className="max-w-6xl mx-auto space-y-8 p-6">
+      <main className="max-w-7xl mx-auto space-y-8 p-6">
         <h1 className="text-4xl font-bold text-center mb-8 text-blue-600">Commission Tracker</h1>
         
         {/* Summary Cards */}
@@ -129,6 +155,16 @@ export default function Home() {
               ${netEarnings.toFixed(2)}
             </p>
           </div>
+        </div>
+
+        {/* Commission Rate Manager Button */}
+        <div className="text-center">
+          <button
+            onClick={() => setShowRateManager(true)}
+            className="bg-purple-600 text-white py-3 px-6 rounded-lg hover:bg-purple-700 transition-colors text-lg font-semibold"
+          >
+            📊 Manage Commission Rates
+          </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -342,6 +378,123 @@ export default function Home() {
             )}
           </div>
         </div>
+
+        {/* Commission Rate Manager Modal */}
+        {showRateManager && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {editingCompany ? `Edit Rates: ${editingCompany}` : 'Commission Rate Manager'}
+                  </h2>
+                  <button
+                    onClick={() => setShowRateManager(false)}
+                    className="text-gray-500 hover:text-gray-700 text-2xl"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                {editingCompany ? (
+                  // Edit specific company rates
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4">Set Commission Rates for {editingCompany}</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {policyTypes.map(type => (
+                        <div key={type}>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">{type} (%)</label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            max="100"
+                            value={editingRates[type] ? editingRates[type] * 100 : ''}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setEditingRates({
+                                ...editingRates,
+                                [type]: value ? parseFloat(value) / 100 : ''
+                              });
+                            }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter percentage"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-4 mt-6">
+                      <button
+                        onClick={saveRates}
+                        className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors"
+                      >
+                        Save Rates
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingCompany('');
+                          setEditingRates({ Auto: '', Life: '', Health: '', Property: '' });
+                        }}
+                        className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  // Show all companies with rates
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {companies.map(company => {
+                        const rates = commissionRates[company];
+                        const hasRates = Object.values(rates).some(rate => rate !== '');
+                        return (
+                          <div
+                            key={company}
+                            className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                              hasRates ? 'border-green-300 bg-green-50' : 'border-gray-300 bg-gray-50'
+                            }`}
+                            onClick={() => openRateEditor(company)}
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <h4 className="font-semibold text-gray-800 text-sm">{company}</h4>
+                              <span className={`text-xs px-2 py-1 rounded ${
+                                hasRates ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-600'
+                              }`}>
+                                {hasRates ? 'Rates Set' : 'No Rates'}
+                              </span>
+                            </div>
+                            <div className="text-xs text-gray-600 space-y-1">
+                              {policyTypes.map(type => (
+                                <div key={type} className="flex justify-between">
+                                  <span>{type}:</span>
+                                  <span className="font-medium">
+                                    {rates[type] ? `${(rates[type] * 100).toFixed(1)}%` : 'Not set'}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="text-center mt-6">
+                      <p className="text-sm text-gray-600 mb-4">
+                        Click on any company to set or edit their commission rates
+                      </p>
+                      <button
+                        onClick={() => setShowRateManager(false)}
+                        className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition-colors"
+                      >
+                        Close Manager
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
