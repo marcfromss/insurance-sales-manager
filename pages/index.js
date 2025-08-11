@@ -1,9 +1,59 @@
 import { useState, useEffect } from 'react';
 
 const commissionRates = {
+  // Existing Carriers
   Aetna: { Auto: 0.1, Life: 0.12, Health: 0.08, Property: 0.11 },
   'State Farm': { Auto: 0.09, Life: 0.15, Health: 0.07, Property: 0.1 },
   'Liberty Mutual': { Auto: 0.08, Life: 0.1, Health: 0.06, Property: 0.12 },
+  
+  // Ancillary
+  Ancillary: { Auto: '', Life: '', Health: '', Property: '' },
+  AFLac: { Auto: '', Life: '', Health: '', Property: '' },
+  'AllState (Dental)': { Auto: '', Life: '', Health: '', Property: '' },
+  Ameritas: { Auto: '', Life: '', Health: '', Property: '' },
+  Assurity: { Auto: '', Life: '', Health: '', Property: '' },
+  Cigna: { Auto: '', Life: '', Health: '', Property: '' },
+  Combined: { Auto: '', Life: '', Health: '', Property: '' },
+  'Direct Vision': { Auto: '', Life: '', Health: '', Property: '' },
+  EyeMed: { Auto: '', Life: '', Health: '', Property: '' },
+  GTL: { Auto: '', Life: '', Health: '', Property: '' },
+  'Heartland Fin\'l': { Auto: '', Life: '', Health: '', Property: '' },
+  Humana: { Auto: '', Life: '', Health: '', Property: '' },
+  'Mut. of Omaha': { Auto: '', Life: '', Health: '', Property: '' },
+  Spirit: { Auto: '', Life: '', Health: '', Property: '' },
+  VSP: { Auto: '', Life: '', Health: '', Property: '' },
+  'Wtl. Wellabe': { Auto: '', Life: '', Health: '', Property: '' },
+  
+  // Life / Annuities
+  'Mutual of Omaha': { Auto: '', Life: '', Health: '', Property: '' },
+  'Alfa AFLac': { Auto: '', Life: '', Health: '', Property: '' },
+  'American Amicable': { Auto: '', Life: '', Health: '', Property: '' },
+  'Ameritas Life': { Auto: '', Life: '', Health: '', Property: '' },
+  'Assurity Life': { Auto: '', Life: '', Health: '', Property: '' },
+  'Aetna Life': { Auto: '', Life: '', Health: '', Property: '' },
+  Foresters: { Auto: '', Life: '', Health: '', Property: '' },
+  'GTL Life': { Auto: '', Life: '', Health: '', Property: '' },
+  'NLG (Nat\'l Life Group)': { Auto: '', Life: '', Health: '', Property: '' },
+  'Core Bridge (AIG & W&S)': { Auto: '', Life: '', Health: '', Property: '' },
+  'F&G': { Auto: '', Life: '', Health: '', Property: '' },
+  'Royal Neighbors': { Auto: '', Life: '', Health: '', Property: '' },
+  Silac: { Auto: '', Life: '', Health: '', Property: '' },
+  'Baltimore Life': { Auto: '', Life: '', Health: '', Property: '' },
+  
+  // Medicare
+  'Aetna Medicare': { Auto: '', Life: '', Health: '', Property: '' },
+  Anthem: { Auto: '', Life: '', Health: '', Property: '' },
+  'CareSource DSNP': { Auto: '', Life: '', Health: '', Property: '' },
+  'Cigna Medicare': { Auto: '', Life: '', Health: '', Property: '' },
+  'Clear Spring': { Auto: '', Life: '', Health: '', Property: '' },
+  Clover: { Auto: '', Life: '', Health: '', Property: '' },
+  Devoted: { Auto: '', Life: '', Health: '', Property: '' },
+  'Humana Medicare': { Auto: '', Life: '', Health: '', Property: '' },
+  Kaiser: { Auto: '', Life: '', Health: '', Property: '' },
+  'Pruitt BNP': { Auto: '', Life: '', Health: '', Property: '' },
+  Sonder: { Auto: '', Life: '', Health: '', Property: '' },
+  'United Health': { Auto: '', Life: '', Health: '', Property: '' },
+  WellCare: { Auto: '', Life: '', Health: '', Property: '' }
 };
 
 const companies = Object.keys(commissionRates);
@@ -34,6 +84,13 @@ export default function Home() {
   const calculate = () => {
     const value = parseFloat(form.value);
     const rate = commissionRates[form.company]?.[form.type] || 0;
+    
+    // Check if rate is empty or invalid
+    if (!rate || rate === '') {
+      alert('Please set a commission rate for this company and policy type first.');
+      return;
+    }
+    
     const earned = value * rate;
     setCommission({ percent: rate * 100, earned });
     const entry = { ...form, percent: rate * 100, earned, value };
@@ -99,9 +156,26 @@ export default function Home() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select company</option>
-                  {companies.map(company => (
-                    <option key={company} value={company}>{company}</option>
-                  ))}
+                  <optgroup label="Existing Carriers">
+                    {companies.slice(0, 3).map(company => (
+                      <option key={company} value={company}>{company}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Ancillary">
+                    {companies.slice(3, 20).map(company => (
+                      <option key={company} value={company}>{company}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Life / Annuities">
+                    {companies.slice(20, 34).map(company => (
+                      <option key={company} value={company}>{company}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Medicare">
+                    {companies.slice(34).map(company => (
+                      <option key={company} value={company}>{company}</option>
+                    ))}
+                  </optgroup>
                 </select>
               </div>
               
