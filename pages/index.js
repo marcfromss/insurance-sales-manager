@@ -71,70 +71,161 @@ export default function Home() {
   const [showRateManager, setShowRateManager] = useState(false);
   const [editingCompany, setEditingCompany] = useState('');
   const [editingRates, setEditingRates] = useState({ Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const savedEntries = localStorage.getItem('entries');
-    const savedChargebacks = localStorage.getItem('chargebacks');
-    const savedRates = localStorage.getItem('commissionRates');
-    
-    if (savedEntries) setEntries(JSON.parse(savedEntries));
-    if (savedChargebacks) setChargebacks(JSON.parse(savedChargebacks));
-    if (savedRates) setCommissionRates(JSON.parse(savedRates));
+    try {
+      setIsLoading(true);
+      const savedEntries = localStorage.getItem('entries');
+      const savedChargebacks = localStorage.getItem('chargebacks');
+      const savedRates = localStorage.getItem('commissionRates');
+      
+      if (savedEntries) {
+        const parsed = JSON.parse(savedEntries);
+        setEntries(Array.isArray(parsed) ? parsed : []);
+      }
+      if (savedChargebacks) {
+        const parsed = JSON.parse(savedChargebacks);
+        setChargebacks(Array.isArray(parsed) ? parsed : []);
+      }
+      if (savedRates) {
+        const parsed = JSON.parse(savedRates);
+        setCommissionRates(parsed && typeof parsed === 'object' ? parsed : defaultCommissionRates);
+      }
+    } catch (error) {
+      console.error('Error loading saved data:', error);
+      // Use defaults if there's an error
+      setEntries([]);
+      setChargebacks([]);
+      setCommissionRates(defaultCommissionRates);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('entries', JSON.stringify(entries));
+    try {
+      if (entries.length > 0) {
+        localStorage.setItem('entries', JSON.stringify(entries));
+      }
+    } catch (error) {
+      console.error('Error saving entries:', error);
+    }
   }, [entries]);
 
   useEffect(() => {
-    localStorage.setItem('chargebacks', JSON.stringify(chargebacks));
+    try {
+      if (chargebacks.length > 0) {
+        localStorage.setItem('chargebacks', JSON.stringify(chargebacks));
+      }
+    } catch (error) {
+      console.error('Error saving chargebacks:', error);
+    }
   }, [chargebacks]);
 
   useEffect(() => {
-    localStorage.setItem('commissionRates', JSON.stringify(commissionRates));
+    try {
+      localStorage.setItem('commissionRates', JSON.stringify(commissionRates));
+    } catch (error) {
+      console.error('Error saving commission rates:', error);
+    }
   }, [commissionRates]);
 
   const calculate = () => {
-    const value = parseFloat(form.value);
-    const rate = commissionRates[form.company]?.[form.type] || 0;
-    
-    // Check if rate is empty or invalid
-    if (!rate || rate === '') {
-      alert('Please set a commission rate for this company and policy type first.');
-      return;
+    try {
+      const value = parseFloat(form.value);
+      if (isNaN(value) || value <= 0) {
+        alert('Please enter a valid policy value.');
+        return;
+      }
+
+      const rate = commissionRates[form.company]?.[form.type];
+      
+      // Check if rate is empty or invalid
+      if (!rate || rate === '' || isNaN(rate)) {
+        alert('Please set a commission rate for this company and policy type first.');
+        return;
+      }
+      
+      const earned = value * rate;
+      setCommission({ percent: rate * 100, earned });
+      const entry = { ...form, percent: rate * 100, earned, value };
+      setEntries([entry, ...entries]);
+      setForm({ client: '', company: '', type: '', value: '', date: '' });
+    } catch (error) {
+      console.error('Error calculating commission:', error);
+      alert('An error occurred while calculating the commission. Please try again.');
     }
-    
-    const earned = value * rate;
-    setCommission({ percent: rate * 100, earned });
-    const entry = { ...form, percent: rate * 100, earned, value };
-    setEntries([entry, ...entries]);
-    setForm({ client: '', company: '', type: '', value: '', date: '' });
   };
 
   const logChargeback = () => {
-    const cb = { ...chargebackForm, amount: parseFloat(chargebackForm.amount) };
-    setChargebacks([cb, ...chargebacks]);
-    setChargebackForm({ client: '', reason: '', amount: '', date: '' });
+    try {
+      const amount = parseFloat(chargebackForm.amount);
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid chargeback amount.');
+        return;
+      }
+
+      const cb = { ...chargebackForm, amount };
+      setChargebacks([cb, ...chargebacks]);
+      setChargebackForm({ client: '', reason: '', amount: '', date: '' });
+    } catch (error) {
+      console.error('Error logging chargeback:', error);
+      alert('An error occurred while logging the chargeback. Please try again.');
+    }
   };
 
   const openRateEditor = (company) => {
-    setEditingCompany(company);
-    setEditingRates({ ...commissionRates[company] });
-    setShowRateManager(true);
+    try {
+      setEditingCompany(company);
+      setEditingRates({ ...commissionRates[company] });
+      setShowRateManager(true);
+    } catch (error) {
+      console.error('Error opening rate editor:', error);
+      alert('An error occurred while opening the rate editor. Please try again.');
+    }
   };
 
   const saveRates = () => {
-    const newRates = { ...commissionRates };
-    newRates[editingCompany] = editingRates;
-    setCommissionRates(newRates);
-    setShowRateManager(false);
-    setEditingCompany('');
-    setEditingRates({ Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' });
+    try {
+      const newRates = { ...commissionRates };
+      newRates[editingCompany] = editingRates;
+      setCommissionRates(newRates);
+      setShowRateManager(false);
+      setEditingCompany('');
+      setEditingRates({ Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' });
+    } catch (error) {
+      console.error('Error saving rates:', error);
+      alert('An error occurred while saving the rates. Please try again.');
+    }
   };
 
-  const totalEarned = entries.reduce((sum, entry) => sum + entry.earned, 0);
-  const totalChargebacks = chargebacks.reduce((sum, cb) => sum + cb.amount, 0);
+  const safeCalculateTotal = (items, key) => {
+    try {
+      return items.reduce((sum, item) => {
+        const value = item[key];
+        return sum + (typeof value === 'number' && !isNaN(value) ? value : 0);
+      }, 0);
+    } catch (error) {
+      console.error('Error calculating total:', error);
+      return 0;
+    }
+  };
+
+  const totalEarned = safeCalculateTotal(entries, 'earned');
+  const totalChargebacks = safeCalculateTotal(chargebacks, 'amount');
   const netEarnings = totalEarned - totalChargebacks;
+
+  if (isLoading) {
+    return (
+      <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading Commission Tracker...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -341,15 +432,15 @@ export default function Home() {
                 {entries.map((entry, index) => (
                   <div key={index} className="border border-gray-200 rounded-md p-4">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-semibold text-gray-800">{entry.client}</h3>
-                      <span className="text-green-600 font-bold">${entry.earned.toFixed(2)}</span>
+                      <h3 className="font-semibold text-gray-800">{entry.client || 'Unknown Client'}</h3>
+                      <span className="text-green-600 font-bold">${(entry.earned || 0).toFixed(2)}</span>
                     </div>
                     <div className="text-sm text-gray-600 space-y-1">
-                      <p><span className="font-medium">Company:</span> {entry.company}</p>
-                      <p><span className="font-medium">Type:</span> {entry.type}</p>
-                      <p><span className="font-medium">Value:</span> ${entry.value.toFixed(2)}</p>
-                      <p><span className="font-medium">Rate:</span> {entry.percent}%</p>
-                      <p><span className="font-medium">Date:</span> {entry.date}</p>
+                      <p><span className="font-medium">Company:</span> {entry.company || 'Unknown'}</p>
+                      <p><span className="font-medium">Type:</span> {entry.type || 'Unknown'}</p>
+                      <p><span className="font-medium">Value:</span> ${(entry.value || 0).toFixed(2)}</p>
+                      <p><span className="font-medium">Rate:</span> {(entry.percent || 0).toFixed(1)}%</p>
+                      <p><span className="font-medium">Date:</span> {entry.date || 'Unknown'}</p>
                     </div>
                   </div>
                 ))}
@@ -367,12 +458,12 @@ export default function Home() {
                 {chargebacks.map((cb, index) => (
                   <div key={index} className="border border-gray-200 rounded-md p-4">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-semibold text-gray-800">{cb.client}</h3>
-                      <span className="text-red-600 font-bold">-${cb.amount.toFixed(2)}</span>
+                      <h3 className="font-semibold text-gray-800">{cb.client || 'Unknown Client'}</h3>
+                      <span className="text-red-600 font-bold">-${(cb.amount || 0).toFixed(2)}</span>
                     </div>
                     <div className="text-sm text-gray-600 space-y-1">
-                      <p><span className="font-medium">Reason:</span> {cb.reason}</p>
-                      <p><span className="font-medium">Date:</span> {cb.date}</p>
+                      <p><span className="font-medium">Reason:</span> {cb.reason || 'Unknown'}</p>
+                      <p><span className="font-medium">Date:</span> {cb.date || 'Unknown'}</p>
                     </div>
                   </div>
                 ))}
@@ -413,11 +504,15 @@ export default function Home() {
                             max="100"
                             value={editingRates[type] ? editingRates[type] * 100 : ''}
                             onChange={(e) => {
-                              const value = e.target.value;
-                              setEditingRates({
-                                ...editingRates,
-                                [type]: value ? parseFloat(value) / 100 : ''
-                              });
+                              try {
+                                const value = e.target.value;
+                                setEditingRates({
+                                  ...editingRates,
+                                  [type]: value ? parseFloat(value) / 100 : ''
+                                });
+                              } catch (error) {
+                                console.error('Error updating rate:', error);
+                              }
                             }}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter percentage"
@@ -448,36 +543,41 @@ export default function Home() {
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {companies.map(company => {
-                        const rates = commissionRates[company];
-                        const hasRates = Object.values(rates).some(rate => rate !== '');
-                        return (
-                          <div
-                            key={company}
-                            className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                              hasRates ? 'border-green-300 bg-green-50' : 'border-gray-300 bg-gray-50'
-                            }`}
-                            onClick={() => openRateEditor(company)}
-                          >
-                            <div className="flex justify-between items-start mb-2">
-                              <h4 className="font-semibold text-gray-800 text-sm">{company}</h4>
-                              <span className={`text-xs px-2 py-1 rounded ${
-                                hasRates ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-600'
-                              }`}>
-                                {hasRates ? 'Rates Set' : 'No Rates'}
-                              </span>
+                        try {
+                          const rates = commissionRates[company] || {};
+                          const hasRates = Object.values(rates).some(rate => rate !== '' && rate !== null);
+                          return (
+                            <div
+                              key={company}
+                              className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                                hasRates ? 'border-green-300 bg-green-50' : 'border-gray-300 bg-gray-50'
+                              }`}
+                              onClick={() => openRateEditor(company)}
+                            >
+                              <div className="flex justify-between items-start mb-2">
+                                <h4 className="font-semibold text-gray-800 text-sm">{company}</h4>
+                                <span className={`text-xs px-2 py-1 rounded ${
+                                  hasRates ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-600'
+                                }`}>
+                                  {hasRates ? 'Rates Set' : 'No Rates'}
+                                </span>
+                              </div>
+                              <div className="text-xs text-gray-600 space-y-1">
+                                {policyTypes.map(type => (
+                                  <div key={type} className="flex justify-between">
+                                    <span>{type}:</span>
+                                    <span className="font-medium">
+                                      {rates[type] ? `${(rates[type] * 100).toFixed(1)}%` : 'Not set'}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                            <div className="text-xs text-gray-600 space-y-1">
-                              {policyTypes.map(type => (
-                                <div key={type} className="flex justify-between">
-                                  <span>{type}:</span>
-                                  <span className="font-medium">
-                                    {rates[type] ? `${(rates[type] * 100).toFixed(1)}%` : 'Not set'}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        );
+                          );
+                        } catch (error) {
+                          console.error('Error rendering company:', company, error);
+                          return null;
+                        }
                       })}
                     </div>
                     <div className="text-center mt-6">
