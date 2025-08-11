@@ -12,7 +12,7 @@ const defaultCommissionRates = {
   'AllState (Dental)': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   Ameritas: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   Assurity: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
-  Cigna: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Healthspring: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   Combined: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   'Direct Vision': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   EyeMed: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
@@ -20,6 +20,7 @@ const defaultCommissionRates = {
   'Heartland Fin\'l': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   Humana: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   'Mut. of Omaha': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Pekin: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   Spirit: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   VSP: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   'Wtl. Wellabe': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
@@ -32,6 +33,7 @@ const defaultCommissionRates = {
   'Assurity Life': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   'Aetna Life': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   Foresters: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Gerber: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   'GTL Life': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   'NLG (Nat\'l Life Group)': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   'Core Bridge (AIG & W&S)': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
@@ -44,7 +46,7 @@ const defaultCommissionRates = {
   'Aetna Medicare': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   Anthem: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   'CareSource DSNP': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
-  'Cigna Medicare': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Healthspring Medicare': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   'Clear Spring': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   Clover: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   Devoted: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
@@ -198,17 +200,17 @@ export default function Home() {
                     ))}
                   </optgroup>
                   <optgroup label="Ancillary">
-                    {companies.slice(3, 20).map(company => (
+                    {companies.slice(3, 21).map(company => (
                       <option key={company} value={company}>{company}</option>
                     ))}
                   </optgroup>
                   <optgroup label="Life / Annuities">
-                    {companies.slice(20, 34).map(company => (
+                    {companies.slice(21, 36).map(company => (
                       <option key={company} value={company}>{company}</option>
                     ))}
                   </optgroup>
                   <optgroup label="Medicare">
-                    {companies.slice(34).map(company => (
+                    {companies.slice(36).map(company => (
                       <option key={company} value={company}>{company}</option>
                     ))}
                   </optgroup>
