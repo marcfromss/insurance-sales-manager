@@ -2,62 +2,62 @@ import { useState, useEffect } from 'react';
 
 const defaultCommissionRates = {
   // Existing Carriers
-  Aetna: { Auto: 0.1, Life: 0.12, Health: 0.08, Property: 0.11 },
-  'State Farm': { Auto: 0.09, Life: 0.15, Health: 0.07, Property: 0.1 },
-  'Liberty Mutual': { Auto: 0.08, Life: 0.1, Health: 0.06, Property: 0.12 },
+  Aetna: { Medicare: 0.1, 'Life/Annuities': 0.12, ACA: 0.08, Ancillary: 0.11 },
+  'State Farm': { Medicare: 0.09, 'Life/Annuities': 0.15, ACA: 0.07, Ancillary: 0.1 },
+  'Liberty Mutual': { Medicare: 0.08, 'Life/Annuities': 0.1, ACA: 0.06, Ancillary: 0.12 },
   
   // Ancillary
-  Ancillary: { Auto: '', Life: '', Health: '', Property: '' },
-  AFLac: { Auto: '', Life: '', Health: '', Property: '' },
-  'AllState (Dental)': { Auto: '', Life: '', Health: '', Property: '' },
-  Ameritas: { Auto: '', Life: '', Health: '', Property: '' },
-  Assurity: { Auto: '', Life: '', Health: '', Property: '' },
-  Cigna: { Auto: '', Life: '', Health: '', Property: '' },
-  Combined: { Auto: '', Life: '', Health: '', Property: '' },
-  'Direct Vision': { Auto: '', Life: '', Health: '', Property: '' },
-  EyeMed: { Auto: '', Life: '', Health: '', Property: '' },
-  GTL: { Auto: '', Life: '', Health: '', Property: '' },
-  'Heartland Fin\'l': { Auto: '', Life: '', Health: '', Property: '' },
-  Humana: { Auto: '', Life: '', Health: '', Property: '' },
-  'Mut. of Omaha': { Auto: '', Life: '', Health: '', Property: '' },
-  Spirit: { Auto: '', Life: '', Health: '', Property: '' },
-  VSP: { Auto: '', Life: '', Health: '', Property: '' },
-  'Wtl. Wellabe': { Auto: '', Life: '', Health: '', Property: '' },
+  Ancillary: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  AFLac: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'AllState (Dental)': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Ameritas: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Assurity: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Cigna: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Combined: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Direct Vision': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  EyeMed: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  GTL: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Heartland Fin\'l': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Humana: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Mut. of Omaha': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Spirit: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  VSP: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Wtl. Wellabe': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   
   // Life / Annuities
-  'Mutual of Omaha': { Auto: '', Life: '', Health: '', Property: '' },
-  'Alfa AFLac': { Auto: '', Life: '', Health: '', Property: '' },
-  'American Amicable': { Auto: '', Life: '', Health: '', Property: '' },
-  'Ameritas Life': { Auto: '', Life: '', Health: '', Property: '' },
-  'Assurity Life': { Auto: '', Life: '', Health: '', Property: '' },
-  'Aetna Life': { Auto: '', Life: '', Health: '', Property: '' },
-  Foresters: { Auto: '', Life: '', Health: '', Property: '' },
-  'GTL Life': { Auto: '', Life: '', Health: '', Property: '' },
-  'NLG (Nat\'l Life Group)': { Auto: '', Life: '', Health: '', Property: '' },
-  'Core Bridge (AIG & W&S)': { Auto: '', Life: '', Health: '', Property: '' },
-  'F&G': { Auto: '', Life: '', Health: '', Property: '' },
-  'Royal Neighbors': { Auto: '', Life: '', Health: '', Property: '' },
-  Silac: { Auto: '', Life: '', Health: '', Property: '' },
-  'Baltimore Life': { Auto: '', Life: '', Health: '', Property: '' },
+  'Mutual of Omaha': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Alfa AFLac': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'American Amicable': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Ameritas Life': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Assurity Life': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Aetna Life': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Foresters: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'GTL Life': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'NLG (Nat\'l Life Group)': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Core Bridge (AIG & W&S)': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'F&G': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Royal Neighbors': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Silac: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Baltimore Life': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
   
   // Medicare
-  'Aetna Medicare': { Auto: '', Life: '', Health: '', Property: '' },
-  Anthem: { Auto: '', Life: '', Health: '', Property: '' },
-  'CareSource DSNP': { Auto: '', Life: '', Health: '', Property: '' },
-  'Cigna Medicare': { Auto: '', Life: '', Health: '', Property: '' },
-  'Clear Spring': { Auto: '', Life: '', Health: '', Property: '' },
-  Clover: { Auto: '', Life: '', Health: '', Property: '' },
-  Devoted: { Auto: '', Life: '', Health: '', Property: '' },
-  'Humana Medicare': { Auto: '', Life: '', Health: '', Property: '' },
-  Kaiser: { Auto: '', Life: '', Health: '', Property: '' },
-  'Pruitt BNP': { Auto: '', Life: '', Health: '', Property: '' },
-  Sonder: { Auto: '', Life: '', Health: '', Property: '' },
-  'United Health': { Auto: '', Life: '', Health: '', Property: '' },
-  WellCare: { Auto: '', Life: '', Health: '', Property: '' }
+  'Aetna Medicare': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Anthem: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'CareSource DSNP': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Cigna Medicare': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Clear Spring': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Clover: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Devoted: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Humana Medicare': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Kaiser: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'Pruitt BNP': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  Sonder: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  'United Health': { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' },
+  WellCare: { Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' }
 };
 
 const companies = Object.keys(defaultCommissionRates);
-const policyTypes = ['Auto', 'Life', 'Health', 'Property'];
+const policyTypes = ['Medicare', 'Life/Annuities', 'ACA', 'Ancillary'];
 
 export default function Home() {
   const [form, setForm] = useState({ client: '', company: '', type: '', value: '', date: '' });
@@ -68,7 +68,7 @@ export default function Home() {
   const [commissionRates, setCommissionRates] = useState(defaultCommissionRates);
   const [showRateManager, setShowRateManager] = useState(false);
   const [editingCompany, setEditingCompany] = useState('');
-  const [editingRates, setEditingRates] = useState({ Auto: '', Life: '', Health: '', Property: '' });
+  const [editingRates, setEditingRates] = useState({ Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' });
 
   useEffect(() => {
     const savedEntries = localStorage.getItem('entries');
@@ -127,7 +127,7 @@ export default function Home() {
     setCommissionRates(newRates);
     setShowRateManager(false);
     setEditingCompany('');
-    setEditingRates({ Auto: '', Life: '', Health: '', Property: '' });
+    setEditingRates({ Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' });
   };
 
   const totalEarned = entries.reduce((sum, entry) => sum + entry.earned, 0);
@@ -433,7 +433,7 @@ export default function Home() {
                       <button
                         onClick={() => {
                           setEditingCompany('');
-                          setEditingRates({ Auto: '', Life: '', Health: '', Property: '' });
+                          setEditingRates({ Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' });
                         }}
                         className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors"
                       >
