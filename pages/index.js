@@ -586,9 +586,41 @@ export default function Home() {
                 <div className="flex justify-between items-center mb-6">
                   <div className="flex items-center">
                     <div className="w-8 h-8 mr-3">
-                      <div className="w-full h-full bg-gradient-to-br from-red-500 to-red-700 transform rotate-45 relative">
-                        <div className="absolute inset-1 bg-gradient-to-br from-red-400 to-red-600 transform rotate-45"></div>
-                      </div>
+                      <svg
+                        role="img"
+                        aria-label="Diamond Coverage icon"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 200 160"
+                        className="drop-shadow"
+                      >
+                        <defs>
+                          <linearGradient id="gemRedModal" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#ff3a3a" />
+                            <stop offset="100%" stopColor="#b10000" />
+                          </linearGradient>
+                        </defs>
+
+                        {/* Outer gem */}
+                        <polygon
+                          points="10,60 60,10 140,10 190,60 100,150"
+                          fill="url(#gemRedModal)"
+                        />
+
+                        {/* Facet lines (white) */}
+                        <g
+                          stroke="#ffffff"
+                          strokeWidth="8"
+                          strokeLinejoin="round"
+                          strokeLinecap="round"
+                          opacity="0.95"
+                        >
+                          <line x1="10" y1="60" x2="190" y2="60" />
+                          <line x1="60" y1="10" x2="100" y2="60" />
+                          <line x1="140" y1="10" x2="100" y2="60" />
+                          <line x1="100" y1="60" x2="100" y2="150" />
+                        </g>
+                      </svg>
                     </div>
                     <h2 className="text-2xl font-bold text-gray-800">
                       {editingCompany ? `Edit Rates: ${editingCompany}` : 'Commission Rate Manager'}
