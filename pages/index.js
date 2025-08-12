@@ -218,9 +218,18 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="relative">
+            {/* Diamond Loading Icon */}
+            <div className="w-24 h-24 mx-auto mb-4">
+              <div className="w-full h-full bg-gradient-to-br from-red-500 to-red-700 transform rotate-45 relative">
+                <div className="absolute inset-2 bg-gradient-to-br from-red-400 to-red-600 transform rotate-45"></div>
+                <div className="absolute inset-4 bg-gradient-to-br from-red-300 to-red-500 transform rotate-45"></div>
+              </div>
+            </div>
+            <div className="animate-pulse text-red-600 font-bold text-xl">Diamond Coverage</div>
+          </div>
           <p className="mt-4 text-gray-600">Loading Commission Tracker...</p>
         </div>
       </div>
@@ -228,22 +237,64 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
       <main className="max-w-7xl mx-auto space-y-8 p-6">
-        <h1 className="text-4xl font-bold text-center mb-8 text-blue-600">Commission Tracker</h1>
+        {/* Diamond Coverage Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center mb-4">
+            {/* Diamond Logo */}
+            <div className="w-16 h-16 mr-4">
+              <div className="w-full h-full bg-gradient-to-br from-red-500 to-red-700 transform rotate-45 relative shadow-lg">
+                <div className="absolute inset-2 bg-gradient-to-br from-red-400 to-red-600 transform rotate-45"></div>
+                <div className="absolute inset-4 bg-gradient-to-br from-red-300 to-red-500 transform rotate-45"></div>
+                {/* Diamond Facets */}
+                <div className="absolute inset-0 border-2 border-white opacity-30 transform rotate-45"></div>
+                <div className="absolute inset-1 border border-white opacity-20 transform rotate-45"></div>
+              </div>
+            </div>
+            <div>
+              <h1 className="text-5xl font-bold text-gray-800 mb-2">
+                <span className="text-red-600">Diamond</span> Coverage
+              </h1>
+              <p className="text-lg text-red-600 font-semibold tracking-wider">CUTTING EDGE INSURANCE</p>
+            </div>
+          </div>
+          <div className="w-32 h-1 bg-gradient-to-r from-red-500 to-red-700 mx-auto rounded-full"></div>
+        </div>
+
+        {/* Commission Tracker Subtitle */}
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-semibold text-gray-700">Commission Tracker</h2>
+          <p className="text-gray-600 mt-2">Professional commission management for insurance professionals</p>
+        </div>
         
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Earned</h3>
+          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-500">
+            <div className="flex items-center mb-2">
+              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                <span className="text-green-600 text-lg">💰</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-700">Total Earned</h3>
+            </div>
             <p className="text-3xl font-bold text-green-600">${totalEarned.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Chargebacks</h3>
+          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-red-500">
+            <div className="flex items-center mb-2">
+              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                <span className="text-red-600 text-lg">📉</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-700">Total Chargebacks</h3>
+            </div>
             <p className="text-3xl font-bold text-red-600">${totalChargebacks.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Net Earnings</h3>
+          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
+            <div className="flex items-center mb-2">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                <span className="text-blue-600 text-lg">📊</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-700">Net Earnings</h3>
+            </div>
             <p className={`text-3xl font-bold ${netEarnings >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               ${netEarnings.toFixed(2)}
             </p>
@@ -254,16 +305,21 @@ export default function Home() {
         <div className="text-center">
           <button
             onClick={() => setShowRateManager(true)}
-            className="bg-purple-600 text-white py-3 px-6 rounded-lg hover:bg-purple-700 transition-colors text-lg font-semibold"
+            className="bg-gradient-to-r from-red-600 to-red-700 text-white py-4 px-8 rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 text-lg font-semibold shadow-lg transform hover:scale-105"
           >
-            📊 Manage Commission Rates
+            💎 Manage Commission Rates
           </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Commission Calculator */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Commission Calculator</h2>
+          <div className="bg-white rounded-lg shadow-lg p-6 border-t-4 border-blue-500">
+            <div className="flex items-center mb-6">
+              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                <span className="text-blue-600 text-xl">🧮</span>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800">Commission Calculator</h2>
+            </div>
             
             <div className="space-y-4">
               <div>
@@ -272,7 +328,7 @@ export default function Home() {
                   type="text"
                   value={form.client}
                   onChange={(e) => setForm({...form, client: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                   placeholder="Enter client name"
                 />
               </div>
@@ -282,7 +338,7 @@ export default function Home() {
                 <select
                   value={form.company}
                   onChange={(e) => setForm({...form, company: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 >
                   <option value="">Select company</option>
                   <optgroup label="Existing Carriers">
@@ -313,7 +369,7 @@ export default function Home() {
                 <select
                   value={form.type}
                   onChange={(e) => setForm({...form, type: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 >
                   <option value="">Select policy type</option>
                   {policyTypes.map(type => (
@@ -328,7 +384,7 @@ export default function Home() {
                   type="number"
                   value={form.value}
                   onChange={(e) => setForm({...form, value: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                   placeholder="Enter policy value"
                 />
               </div>
@@ -339,14 +395,14 @@ export default function Home() {
                   type="date"
                   value={form.date}
                   onChange={(e) => setForm({...form, date: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 />
               </div>
               
               <button
                 onClick={calculate}
                 disabled={!form.client || !form.company || !form.type || !form.value || !form.date}
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-4 rounded-md hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-300 font-semibold shadow-md"
               >
                 Calculate Commission
               </button>
@@ -362,8 +418,13 @@ export default function Home() {
           </div>
 
           {/* Chargeback Form */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Log Chargeback</h2>
+          <div className="bg-white rounded-lg shadow-lg p-6 border-t-4 border-red-500">
+            <div className="flex items-center mb-6">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                <span className="text-red-600 text-xl">⚠️</span>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800">Log Chargeback</h2>
+            </div>
             
             <div className="space-y-4">
               <div>
@@ -372,7 +433,7 @@ export default function Home() {
                   type="text"
                   value={chargebackForm.client}
                   onChange={(e) => setChargebackForm({...chargebackForm, client: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                   placeholder="Enter client name"
                 />
               </div>
@@ -383,7 +444,7 @@ export default function Home() {
                   type="text"
                   value={chargebackForm.reason}
                   onChange={(e) => setChargebackForm({...chargebackForm, reason: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                   placeholder="Enter chargeback reason"
                 />
               </div>
@@ -394,7 +455,7 @@ export default function Home() {
                   type="number"
                   value={chargebackForm.amount}
                   onChange={(e) => setChargebackForm({...chargebackForm, amount: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                   placeholder="Enter chargeback amount"
                 />
               </div>
@@ -405,14 +466,14 @@ export default function Home() {
                   type="date"
                   value={chargebackForm.date}
                   onChange={(e) => setChargebackForm({...chargebackForm, date: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 />
               </div>
               
               <button
                 onClick={logChargeback}
                 disabled={!chargebackForm.client || !chargebackForm.reason || !chargebackForm.amount || !chargebackForm.date}
-                className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 rounded-md hover:from-red-700 hover:to-red-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-300 font-semibold shadow-md"
               >
                 Log Chargeback
               </button>
@@ -423,14 +484,19 @@ export default function Home() {
         {/* Entries and Chargebacks Lists */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Commission Entries */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Commission Entries</h2>
+          <div className="bg-white rounded-lg shadow-lg p-6 border-t-4 border-green-500">
+            <div className="flex items-center mb-6">
+              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                <span className="text-green-600 text-xl">📋</span>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800">Commission Entries</h2>
+            </div>
             {entries.length === 0 ? (
               <p className="text-gray-500 text-center py-4">No entries yet</p>
             ) : (
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {entries.map((entry, index) => (
-                  <div key={index} className="border border-gray-200 rounded-md p-4">
+                  <div key={index} className="border border-gray-200 rounded-md p-4 hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-semibold text-gray-800">{entry.client || 'Unknown Client'}</h3>
                       <span className="text-green-600 font-bold">${(entry.earned || 0).toFixed(2)}</span>
@@ -449,14 +515,19 @@ export default function Home() {
           </div>
 
           {/* Chargebacks */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Chargebacks</h2>
+          <div className="bg-white rounded-lg shadow-lg p-6 border-t-4 border-red-500">
+            <div className="flex items-center mb-6">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                <span className="text-red-600 text-xl">📊</span>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800">Chargebacks</h2>
+            </div>
             {chargebacks.length === 0 ? (
               <p className="text-gray-500 text-center py-4">No chargebacks yet</p>
             ) : (
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {chargebacks.map((cb, index) => (
-                  <div key={index} className="border border-gray-200 rounded-md p-4">
+                  <div key={index} className="border border-gray-200 rounded-md p-4 hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-semibold text-gray-800">{cb.client || 'Unknown Client'}</h3>
                       <span className="text-red-600 font-bold">-${(cb.amount || 0).toFixed(2)}</span>
@@ -478,12 +549,19 @@ export default function Home() {
             <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    {editingCompany ? `Edit Rates: ${editingCompany}` : 'Commission Rate Manager'}
-                  </h2>
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 mr-3">
+                      <div className="w-full h-full bg-gradient-to-br from-red-500 to-red-700 transform rotate-45 relative">
+                        <div className="absolute inset-1 bg-gradient-to-br from-red-400 to-red-600 transform rotate-45"></div>
+                      </div>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-800">
+                      {editingCompany ? `Edit Rates: ${editingCompany}` : 'Commission Rate Manager'}
+                    </h2>
+                  </div>
                   <button
                     onClick={() => setShowRateManager(false)}
-                    className="text-gray-500 hover:text-gray-700 text-2xl"
+                    className="text-gray-500 hover:text-gray-700 text-2xl hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center"
                   >
                     ×
                   </button>
@@ -514,7 +592,7 @@ export default function Home() {
                                 console.error('Error updating rate:', error);
                               }
                             }}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             placeholder="Enter percentage"
                           />
                         </div>
@@ -523,7 +601,7 @@ export default function Home() {
                     <div className="flex gap-4 mt-6">
                       <button
                         onClick={saveRates}
-                        className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors"
+                        className="bg-gradient-to-r from-green-600 to-green-700 text-white py-2 px-4 rounded-md hover:from-green-700 hover:to-green-800 transition-all duration-300 font-semibold"
                       >
                         Save Rates
                       </button>
@@ -532,7 +610,7 @@ export default function Home() {
                           setEditingCompany('');
                           setEditingRates({ Medicare: '', 'Life/Annuities': '', ACA: '', Ancillary: '' });
                         }}
-                        className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors"
+                        className="bg-gradient-to-r from-gray-600 to-gray-700 text-white py-2 px-4 rounded-md hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-semibold"
                       >
                         Cancel
                       </button>
@@ -549,8 +627,8 @@ export default function Home() {
                           return (
                             <div
                               key={company}
-                              className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                                hasRates ? 'border-green-300 bg-green-50' : 'border-gray-300 bg-gray-50'
+                              className={`border rounded-lg p-4 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                                hasRates ? 'border-green-300 bg-green-50 hover:bg-green-100' : 'border-gray-300 bg-gray-50 hover:bg-gray-100'
                               }`}
                               onClick={() => openRateEditor(company)}
                             >
@@ -586,7 +664,7 @@ export default function Home() {
                       </p>
                       <button
                         onClick={() => setShowRateManager(false)}
-                        className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition-colors"
+                        className="bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-6 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 font-semibold"
                       >
                         Close Manager
                       </button>
