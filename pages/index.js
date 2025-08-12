@@ -220,15 +220,9 @@ export default function Home() {
     return (
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="relative">
-            {/* Diamond Loading Icon */}
-            <div className="w-24 h-24 mx-auto mb-4">
-              <div className="w-full h-full bg-gradient-to-br from-red-500 to-red-700 transform rotate-45 relative">
-                <div className="absolute inset-2 bg-gradient-to-br from-red-400 to-red-600 transform rotate-45"></div>
-                <div className="absolute inset-4 bg-gradient-to-br from-red-300 to-red-500 transform rotate-45"></div>
-              </div>
-            </div>
-            <div className="animate-pulse text-red-600 font-bold text-xl">Diamond Coverage</div>
+          <div className="mb-4">
+            <h1 className="text-red-600 font-serif text-3xl italic mb-2">Diamond Coverage</h1>
+            <p className="text-red-600 font-medium tracking-wider">CUTTING EDGE INSURANCE</p>
           </div>
           <p className="mt-4 text-gray-600">Loading Commission Tracker...</p>
         </div>
@@ -239,27 +233,68 @@ export default function Home() {
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
       <main className="max-w-7xl mx-auto space-y-8 p-6">
-        {/* Diamond Coverage Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            {/* Diamond Logo */}
-            <div className="w-16 h-16 mr-4">
-              <div className="w-full h-full bg-gradient-to-br from-red-500 to-red-700 transform rotate-45 relative shadow-lg">
-                <div className="absolute inset-2 bg-gradient-to-br from-red-400 to-red-600 transform rotate-45"></div>
-                <div className="absolute inset-4 bg-gradient-to-br from-red-300 to-red-500 transform rotate-45"></div>
-                {/* Diamond Facets */}
-                <div className="absolute inset-0 border-2 border-white opacity-30 transform rotate-45"></div>
-                <div className="absolute inset-1 border border-white opacity-20 transform rotate-45"></div>
+        {/* Diamond Coverage Logo */}
+        <div className="flex justify-center mb-8">
+          <div className="flex items-center gap-6">
+            {/* Diamond icon */}
+            <svg
+              role="img"
+              aria-label="Diamond Coverage logo icon"
+              width="200"
+              height="160"
+              viewBox="0 0 200 160"
+              className="drop-shadow"
+            >
+              <defs>
+                <linearGradient id="gemRed" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#ff3a3a" />
+                  <stop offset="100%" stopColor="#b10000" />
+                </linearGradient>
+              </defs>
+
+              {/* Outer gem */}
+              <polygon
+                points="10,60 60,10 140,10 190,60 100,150"
+                fill="url(#gemRed)"
+              />
+
+              {/* Facet lines (white, like the reference) */}
+              <g
+                stroke="#ffffff"
+                strokeWidth="8"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                opacity="0.95"
+              >
+                <line x1="10" y1="60" x2="190" y2="60" />
+                <line x1="60" y1="10" x2="100" y2="60" />
+                <line x1="140" y1="10" x2="100" y2="60" />
+                <line x1="100" y1="60" x2="100" y2="150" />
+              </g>
+            </svg>
+
+            {/* Wordmark + tagline */}
+            <div className="leading-none">
+              <div
+                style={{ fontFamily: "'Great Vibes', cursive" }}
+                className="text-[76px] -mb-3"
+              >
+                Diamond
+              </div>
+              <div
+                style={{ fontFamily: "'Great Vibes', cursive" }}
+                className="text-[76px]"
+              >
+                Coverage
+              </div>
+              <div
+                style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}
+                className="uppercase tracking-[0.35em] text-red-600 font-semibold text-sm mt-3"
+              >
+                Cutting Edge Insurance
               </div>
             </div>
-            <div>
-              <h1 className="text-5xl font-bold text-gray-800 mb-2">
-                <span className="text-red-600">Diamond</span> Coverage
-              </h1>
-              <p className="text-lg text-red-600 font-semibold tracking-wider">CUTTING EDGE INSURANCE</p>
-            </div>
           </div>
-          <div className="w-32 h-1 bg-gradient-to-r from-red-500 to-red-700 mx-auto rounded-full"></div>
         </div>
 
         {/* Commission Tracker Subtitle */}
