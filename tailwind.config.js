@@ -4,10 +4,10 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          primary: '#B91C1C',
-          primaryDark: '#991B1B',
-          secondary: '#0F172A',
-          gold: '#F59E0B'
+          primary: '#7C3AED',
+          primaryDark: '#6D28D9',
+          secondary: '#4C1D95',
+          gold: '#C4B5FD'
         }
       },
       fontFamily: {

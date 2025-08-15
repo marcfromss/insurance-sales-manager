@@ -292,7 +292,7 @@ export default function Home() {
           {/* Commission Calculator */}
           <div className="bg-white rounded-lg shadow-lg p-6 border-t-4 border-brand-primary">
             <div className="flex items-center mb-6">
-              <div className="w-10 h-10 bg-rose-50 rounded-full flex items-center justify-center mr-3">
+              <div className="w-10 h-10 bg-violet-50 rounded-full flex items-center justify-center mr-3">
                 <span className="text-brand-primary text-xl">🧮</span>
               </div>
               <h2 className="text-2xl font-bold text-gray-800">Commission Calculator</h2>
@@ -397,7 +397,7 @@ export default function Home() {
           {/* Chargeback Form */}
           <div className="bg-white rounded-lg shadow-lg p-6 border-t-4 border-brand-primary">
             <div className="flex items-center mb-6">
-              <div className="w-10 h-10 bg-rose-50 rounded-full flex items-center justify-center mr-3">
+              <div className="w-10 h-10 bg-violet-50 rounded-full flex items-center justify-center mr-3">
                 <span className="text-brand-primary text-xl">⚠️</span>
               </div>
               <h2 className="text-2xl font-bold text-gray-800">Log Chargeback</h2>
