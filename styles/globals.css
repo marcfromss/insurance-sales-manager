@@ -5,7 +5,4 @@
 .input {
   @apply w-full p-2 border border-gray-300 rounded;
 }
-
-html, body {
-  @apply font-body text-slate-800 bg-gradient-to-br from-gray-50 to-gray-100;
-}
+/* keep default browser font stack for Diamond Coverage */
